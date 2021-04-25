@@ -1,0 +1,14 @@
+Progname is STATS 
+In Line Number 4 : Syntax Error : Expected ' : ' 
+Program STATS end is reached
+------------SYMTAB------------------
+list[0]-->(100 :: 1 ::  281 )---> NULL
+list[1]-->(0 :: 1 ::  281 )---> NULL
+list[2]-->(VALUE :: 1 ::  282 )---> (1 :: 1 ::  281 )---> NULL
+list[3]-->(SAT :: 1 ::  282 )---> NULL
+list[4]-->(STATS :: 1 ::  282 )---> (SUMSQ :: 1 ::  282 )---> (MEAN :: 1 ::  282 )---> (VARIANCE :: 1 ::  282 )---> NULL
+list[5]-->NULL
+list[6]-->(SUM :: 1 ::  282 )---> (I :: 1 ::  282 )---> NULL
+list[7]-->NULL
+list[8]-->NULL
+list[9]-->NULL

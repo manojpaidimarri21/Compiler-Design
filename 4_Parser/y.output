@@ -1,0 +1,980 @@
+Grammar
+
+    0 $accept: prog $end
+
+    1 prog: PROGRAMtoken progName var decList beg stmtList enddot
+
+    2 progName: id
+
+    3 decList: dec
+    4        | decList SEMICOLONtoken dec
+    5        | error dec
+
+    6 dec: idList COLONtoken idType
+    7    | error idType
+
+    8 idType: INTEGERtoken
+    9       | REALDectoken
+
+   10 idList: id
+   11       | idList COMMAtoken id
+
+   12 stmtList: stmt
+   13         | stmtList SEMICOLONtoken stmt
+   14         | error stmt
+
+   15 stmt: assign
+   16     | read
+   17     | write
+   18     | for
+
+   19 assign: id COLEQUALtoken exp
+   20       | error exp
+
+   21 exp: term
+   22    | exp PLUStoken term
+   23    | exp MINUStoken term
+
+   24 term: factor
+   25     | term ASTERISKtoken factor
+   26     | term DIVtoken factor
+
+   27 factor: id
+   28       | INTtoken
+   29       | REALtoken
+   30       | LEFTPARENTHESIStoken exp RIGHTPARENTHESIStoken
+
+   31 read: READtoken LEFTPARENTHESIStoken idList RIGHTPARENTHESIStoken
+
+   32 write: WRITEtoken LEFTPARENTHESIStoken idList RIGHTPARENTHESIStoken
+
+   33 for: FORtoken index_exp DOtoken body
+
+   34 index_exp: id COLEQUALtoken exp TOtoken exp
+   35          | error do
+
+   36 body: stmt
+   37     | beg stmtList ENDtoken
+
+   38 id: IDtoken
+
+   39 var: VARtoken
+
+   40 beg: BEGINtoken
+
+   41 enddot: ENDDOTtoken
+
+   42 do: DOtoken
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256) 5 7 14 20 35
+PROGRAMtoken (258) 1
+VARtoken (259) 39
+BEGINtoken (260) 40
+ENDtoken (261) 37
+ENDDOTtoken (262) 41
+INTEGERtoken (263) 8
+REALDectoken (264) 9
+FORtoken (265) 33
+READtoken (266) 31
+WRITEtoken (267) 32
+TOtoken (268) 34
+DOtoken (269) 33 42
+SEMICOLONtoken (270) 4 13
+COLONtoken (271) 6
+REALtoken (272) 29
+COMMAtoken (273) 11
+COLEQUALtoken (274) 19 34
+PLUStoken (275) 22
+MINUStoken (276) 23
+ASTERISKtoken (277) 25
+DIVtoken (278) 26
+LEFTPARENTHESIStoken (279) 30 31 32
+RIGHTPARENTHESIStoken (280) 30 31 32
+INTtoken (281) 28
+IDtoken (282) 38
+
+
+Nonterminals, with rules where they appear
+
+$accept (28)
+    on left: 0
+prog (29)
+    on left: 1, on right: 0
+progName (30)
+    on left: 2, on right: 1
+decList (31)
+    on left: 3 4 5, on right: 1 4
+dec (32)
+    on left: 6 7, on right: 3 4 5
+idType (33)
+    on left: 8 9, on right: 6 7
+idList (34)
+    on left: 10 11, on right: 6 11 31 32
+stmtList (35)
+    on left: 12 13 14, on right: 1 13 37
+stmt (36)
+    on left: 15 16 17 18, on right: 12 13 14 36
+assign (37)
+    on left: 19 20, on right: 15
+exp (38)
+    on left: 21 22 23, on right: 19 20 22 23 30 34
+term (39)
+    on left: 24 25 26, on right: 21 22 23 25 26
+factor (40)
+    on left: 27 28 29 30, on right: 24 25 26
+read (41)
+    on left: 31, on right: 16
+write (42)
+    on left: 32, on right: 17
+for (43)
+    on left: 33, on right: 18
+index_exp (44)
+    on left: 34 35, on right: 33
+body (45)
+    on left: 36 37, on right: 33
+id (46)
+    on left: 38, on right: 2 10 11 19 27 34
+var (47)
+    on left: 39, on right: 1
+beg (48)
+    on left: 40, on right: 1 37
+enddot (49)
+    on left: 41, on right: 1
+do (50)
+    on left: 42, on right: 35
+
+
+State 0
+
+    0 $accept: . prog $end
+
+    PROGRAMtoken  shift, and go to state 1
+
+    prog  go to state 2
+
+
+State 1
+
+    1 prog: PROGRAMtoken . progName var decList beg stmtList enddot
+
+    IDtoken  shift, and go to state 3
+
+    progName  go to state 4
+    id        go to state 5
+
+
+State 2
+
+    0 $accept: prog . $end
+
+    $end  shift, and go to state 6
+
+
+State 3
+
+   38 id: IDtoken .
+
+    $default  reduce using rule 38 (id)
+
+
+State 4
+
+    1 prog: PROGRAMtoken progName . var decList beg stmtList enddot
+
+    VARtoken  shift, and go to state 7
+
+    var  go to state 8
+
+
+State 5
+
+    2 progName: id .
+
+    $default  reduce using rule 2 (progName)
+
+
+State 6
+
+    0 $accept: prog $end .
+
+    $default  accept
+
+
+State 7
+
+   39 var: VARtoken .
+
+    $default  reduce using rule 39 (var)
+
+
+State 8
+
+    1 prog: PROGRAMtoken progName var . decList beg stmtList enddot
+
+    error    shift, and go to state 9
+    IDtoken  shift, and go to state 3
+
+    decList  go to state 10
+    dec      go to state 11
+    idList   go to state 12
+    id       go to state 13
+
+
+State 9
+
+    5 decList: error . dec
+    7 dec: error . idType
+
+    error         shift, and go to state 14
+    INTEGERtoken  shift, and go to state 15
+    REALDectoken  shift, and go to state 16
+    IDtoken       shift, and go to state 3
+
+    dec     go to state 17
+    idType  go to state 18
+    idList  go to state 12
+    id      go to state 13
+
+
+State 10
+
+    1 prog: PROGRAMtoken progName var decList . beg stmtList enddot
+    4 decList: decList . SEMICOLONtoken dec
+
+    BEGINtoken      shift, and go to state 19
+    SEMICOLONtoken  shift, and go to state 20
+
+    beg  go to state 21
+
+
+State 11
+
+    3 decList: dec .
+
+    $default  reduce using rule 3 (decList)
+
+
+State 12
+
+    6 dec: idList . COLONtoken idType
+   11 idList: idList . COMMAtoken id
+
+    COLONtoken  shift, and go to state 22
+    COMMAtoken  shift, and go to state 23
+
+
+State 13
+
+   10 idList: id .
+
+    $default  reduce using rule 10 (idList)
+
+
+State 14
+
+    7 dec: error . idType
+
+    INTEGERtoken  shift, and go to state 15
+    REALDectoken  shift, and go to state 16
+
+    idType  go to state 18
+
+
+State 15
+
+    8 idType: INTEGERtoken .
+
+    $default  reduce using rule 8 (idType)
+
+
+State 16
+
+    9 idType: REALDectoken .
+
+    $default  reduce using rule 9 (idType)
+
+
+State 17
+
+    5 decList: error dec .
+
+    $default  reduce using rule 5 (decList)
+
+
+State 18
+
+    7 dec: error idType .
+
+    $default  reduce using rule 7 (dec)
+
+
+State 19
+
+   40 beg: BEGINtoken .
+
+    $default  reduce using rule 40 (beg)
+
+
+State 20
+
+    4 decList: decList SEMICOLONtoken . dec
+
+    error    shift, and go to state 14
+    IDtoken  shift, and go to state 3
+
+    dec     go to state 24
+    idList  go to state 12
+    id      go to state 13
+
+
+State 21
+
+    1 prog: PROGRAMtoken progName var decList beg . stmtList enddot
+
+    error       shift, and go to state 25
+    FORtoken    shift, and go to state 26
+    READtoken   shift, and go to state 27
+    WRITEtoken  shift, and go to state 28
+    IDtoken     shift, and go to state 3
+
+    stmtList  go to state 29
+    stmt      go to state 30
+    assign    go to state 31
+    read      go to state 32
+    write     go to state 33
+    for       go to state 34
+    id        go to state 35
+
+
+State 22
+
+    6 dec: idList COLONtoken . idType
+
+    INTEGERtoken  shift, and go to state 15
+    REALDectoken  shift, and go to state 16
+
+    idType  go to state 36
+
+
+State 23
+
+   11 idList: idList COMMAtoken . id
+
+    IDtoken  shift, and go to state 3
+
+    id  go to state 37
+
+
+State 24
+
+    4 decList: decList SEMICOLONtoken dec .
+
+    $default  reduce using rule 4 (decList)
+
+
+State 25
+
+   14 stmtList: error . stmt
+   20 assign: error . exp
+
+    error                 shift, and go to state 38
+    FORtoken              shift, and go to state 26
+    READtoken             shift, and go to state 27
+    WRITEtoken            shift, and go to state 28
+    REALtoken             shift, and go to state 39
+    LEFTPARENTHESIStoken  shift, and go to state 40
+    INTtoken              shift, and go to state 41
+    IDtoken               shift, and go to state 3
+
+    stmt    go to state 42
+    assign  go to state 31
+    exp     go to state 43
+    term    go to state 44
+    factor  go to state 45
+    read    go to state 32
+    write   go to state 33
+    for     go to state 34
+    id      go to state 46
+
+
+State 26
+
+   33 for: FORtoken . index_exp DOtoken body
+
+    error    shift, and go to state 47
+    IDtoken  shift, and go to state 3
+
+    index_exp  go to state 48
+    id         go to state 49
+
+
+State 27
+
+   31 read: READtoken . LEFTPARENTHESIStoken idList RIGHTPARENTHESIStoken
+
+    LEFTPARENTHESIStoken  shift, and go to state 50
+
+
+State 28
+
+   32 write: WRITEtoken . LEFTPARENTHESIStoken idList RIGHTPARENTHESIStoken
+
+    LEFTPARENTHESIStoken  shift, and go to state 51
+
+
+State 29
+
+    1 prog: PROGRAMtoken progName var decList beg stmtList . enddot
+   13 stmtList: stmtList . SEMICOLONtoken stmt
+
+    ENDDOTtoken     shift, and go to state 52
+    SEMICOLONtoken  shift, and go to state 53
+
+    enddot  go to state 54
+
+
+State 30
+
+   12 stmtList: stmt .
+
+    $default  reduce using rule 12 (stmtList)
+
+
+State 31
+
+   15 stmt: assign .
+
+    $default  reduce using rule 15 (stmt)
+
+
+State 32
+
+   16 stmt: read .
+
+    $default  reduce using rule 16 (stmt)
+
+
+State 33
+
+   17 stmt: write .
+
+    $default  reduce using rule 17 (stmt)
+
+
+State 34
+
+   18 stmt: for .
+
+    $default  reduce using rule 18 (stmt)
+
+
+State 35
+
+   19 assign: id . COLEQUALtoken exp
+
+    COLEQUALtoken  shift, and go to state 55
+
+
+State 36
+
+    6 dec: idList COLONtoken idType .
+
+    $default  reduce using rule 6 (dec)
+
+
+State 37
+
+   11 idList: idList COMMAtoken id .
+
+    $default  reduce using rule 11 (idList)
+
+
+State 38
+
+   20 assign: error . exp
+
+    REALtoken             shift, and go to state 39
+    LEFTPARENTHESIStoken  shift, and go to state 40
+    INTtoken              shift, and go to state 41
+    IDtoken               shift, and go to state 3
+
+    exp     go to state 43
+    term    go to state 44
+    factor  go to state 45
+    id      go to state 56
+
+
+State 39
+
+   29 factor: REALtoken .
+
+    $default  reduce using rule 29 (factor)
+
+
+State 40
+
+   30 factor: LEFTPARENTHESIStoken . exp RIGHTPARENTHESIStoken
+
+    REALtoken             shift, and go to state 39
+    LEFTPARENTHESIStoken  shift, and go to state 40
+    INTtoken              shift, and go to state 41
+    IDtoken               shift, and go to state 3
+
+    exp     go to state 57
+    term    go to state 44
+    factor  go to state 45
+    id      go to state 56
+
+
+State 41
+
+   28 factor: INTtoken .
+
+    $default  reduce using rule 28 (factor)
+
+
+State 42
+
+   14 stmtList: error stmt .
+
+    $default  reduce using rule 14 (stmtList)
+
+
+State 43
+
+   20 assign: error exp .
+   22 exp: exp . PLUStoken term
+   23    | exp . MINUStoken term
+
+    PLUStoken   shift, and go to state 58
+    MINUStoken  shift, and go to state 59
+
+    $default  reduce using rule 20 (assign)
+
+
+State 44
+
+   21 exp: term .
+   25 term: term . ASTERISKtoken factor
+   26     | term . DIVtoken factor
+
+    ASTERISKtoken  shift, and go to state 60
+    DIVtoken       shift, and go to state 61
+
+    $default  reduce using rule 21 (exp)
+
+
+State 45
+
+   24 term: factor .
+
+    $default  reduce using rule 24 (term)
+
+
+State 46
+
+   19 assign: id . COLEQUALtoken exp
+   27 factor: id .
+
+    COLEQUALtoken  shift, and go to state 55
+
+    $default  reduce using rule 27 (factor)
+
+
+State 47
+
+   35 index_exp: error . do
+
+    DOtoken  shift, and go to state 62
+
+    do  go to state 63
+
+
+State 48
+
+   33 for: FORtoken index_exp . DOtoken body
+
+    DOtoken  shift, and go to state 64
+
+
+State 49
+
+   34 index_exp: id . COLEQUALtoken exp TOtoken exp
+
+    COLEQUALtoken  shift, and go to state 65
+
+
+State 50
+
+   31 read: READtoken LEFTPARENTHESIStoken . idList RIGHTPARENTHESIStoken
+
+    IDtoken  shift, and go to state 3
+
+    idList  go to state 66
+    id      go to state 13
+
+
+State 51
+
+   32 write: WRITEtoken LEFTPARENTHESIStoken . idList RIGHTPARENTHESIStoken
+
+    IDtoken  shift, and go to state 3
+
+    idList  go to state 67
+    id      go to state 13
+
+
+State 52
+
+   41 enddot: ENDDOTtoken .
+
+    $default  reduce using rule 41 (enddot)
+
+
+State 53
+
+   13 stmtList: stmtList SEMICOLONtoken . stmt
+
+    error       shift, and go to state 38
+    FORtoken    shift, and go to state 26
+    READtoken   shift, and go to state 27
+    WRITEtoken  shift, and go to state 28
+    IDtoken     shift, and go to state 3
+
+    stmt    go to state 68
+    assign  go to state 31
+    read    go to state 32
+    write   go to state 33
+    for     go to state 34
+    id      go to state 35
+
+
+State 54
+
+    1 prog: PROGRAMtoken progName var decList beg stmtList enddot .
+
+    $default  reduce using rule 1 (prog)
+
+
+State 55
+
+   19 assign: id COLEQUALtoken . exp
+
+    REALtoken             shift, and go to state 39
+    LEFTPARENTHESIStoken  shift, and go to state 40
+    INTtoken              shift, and go to state 41
+    IDtoken               shift, and go to state 3
+
+    exp     go to state 69
+    term    go to state 44
+    factor  go to state 45
+    id      go to state 56
+
+
+State 56
+
+   27 factor: id .
+
+    $default  reduce using rule 27 (factor)
+
+
+State 57
+
+   22 exp: exp . PLUStoken term
+   23    | exp . MINUStoken term
+   30 factor: LEFTPARENTHESIStoken exp . RIGHTPARENTHESIStoken
+
+    PLUStoken              shift, and go to state 58
+    MINUStoken             shift, and go to state 59
+    RIGHTPARENTHESIStoken  shift, and go to state 70
+
+
+State 58
+
+   22 exp: exp PLUStoken . term
+
+    REALtoken             shift, and go to state 39
+    LEFTPARENTHESIStoken  shift, and go to state 40
+    INTtoken              shift, and go to state 41
+    IDtoken               shift, and go to state 3
+
+    term    go to state 71
+    factor  go to state 45
+    id      go to state 56
+
+
+State 59
+
+   23 exp: exp MINUStoken . term
+
+    REALtoken             shift, and go to state 39
+    LEFTPARENTHESIStoken  shift, and go to state 40
+    INTtoken              shift, and go to state 41
+    IDtoken               shift, and go to state 3
+
+    term    go to state 72
+    factor  go to state 45
+    id      go to state 56
+
+
+State 60
+
+   25 term: term ASTERISKtoken . factor
+
+    REALtoken             shift, and go to state 39
+    LEFTPARENTHESIStoken  shift, and go to state 40
+    INTtoken              shift, and go to state 41
+    IDtoken               shift, and go to state 3
+
+    factor  go to state 73
+    id      go to state 56
+
+
+State 61
+
+   26 term: term DIVtoken . factor
+
+    REALtoken             shift, and go to state 39
+    LEFTPARENTHESIStoken  shift, and go to state 40
+    INTtoken              shift, and go to state 41
+    IDtoken               shift, and go to state 3
+
+    factor  go to state 74
+    id      go to state 56
+
+
+State 62
+
+   42 do: DOtoken .
+
+    $default  reduce using rule 42 (do)
+
+
+State 63
+
+   35 index_exp: error do .
+
+    $default  reduce using rule 35 (index_exp)
+
+
+State 64
+
+   33 for: FORtoken index_exp DOtoken . body
+
+    error       shift, and go to state 38
+    BEGINtoken  shift, and go to state 19
+    FORtoken    shift, and go to state 26
+    READtoken   shift, and go to state 27
+    WRITEtoken  shift, and go to state 28
+    IDtoken     shift, and go to state 3
+
+    stmt    go to state 75
+    assign  go to state 31
+    read    go to state 32
+    write   go to state 33
+    for     go to state 34
+    body    go to state 76
+    id      go to state 35
+    beg     go to state 77
+
+
+State 65
+
+   34 index_exp: id COLEQUALtoken . exp TOtoken exp
+
+    REALtoken             shift, and go to state 39
+    LEFTPARENTHESIStoken  shift, and go to state 40
+    INTtoken              shift, and go to state 41
+    IDtoken               shift, and go to state 3
+
+    exp     go to state 78
+    term    go to state 44
+    factor  go to state 45
+    id      go to state 56
+
+
+State 66
+
+   11 idList: idList . COMMAtoken id
+   31 read: READtoken LEFTPARENTHESIStoken idList . RIGHTPARENTHESIStoken
+
+    COMMAtoken             shift, and go to state 23
+    RIGHTPARENTHESIStoken  shift, and go to state 79
+
+
+State 67
+
+   11 idList: idList . COMMAtoken id
+   32 write: WRITEtoken LEFTPARENTHESIStoken idList . RIGHTPARENTHESIStoken
+
+    COMMAtoken             shift, and go to state 23
+    RIGHTPARENTHESIStoken  shift, and go to state 80
+
+
+State 68
+
+   13 stmtList: stmtList SEMICOLONtoken stmt .
+
+    $default  reduce using rule 13 (stmtList)
+
+
+State 69
+
+   19 assign: id COLEQUALtoken exp .
+   22 exp: exp . PLUStoken term
+   23    | exp . MINUStoken term
+
+    PLUStoken   shift, and go to state 58
+    MINUStoken  shift, and go to state 59
+
+    $default  reduce using rule 19 (assign)
+
+
+State 70
+
+   30 factor: LEFTPARENTHESIStoken exp RIGHTPARENTHESIStoken .
+
+    $default  reduce using rule 30 (factor)
+
+
+State 71
+
+   22 exp: exp PLUStoken term .
+   25 term: term . ASTERISKtoken factor
+   26     | term . DIVtoken factor
+
+    ASTERISKtoken  shift, and go to state 60
+    DIVtoken       shift, and go to state 61
+
+    $default  reduce using rule 22 (exp)
+
+
+State 72
+
+   23 exp: exp MINUStoken term .
+   25 term: term . ASTERISKtoken factor
+   26     | term . DIVtoken factor
+
+    ASTERISKtoken  shift, and go to state 60
+    DIVtoken       shift, and go to state 61
+
+    $default  reduce using rule 23 (exp)
+
+
+State 73
+
+   25 term: term ASTERISKtoken factor .
+
+    $default  reduce using rule 25 (term)
+
+
+State 74
+
+   26 term: term DIVtoken factor .
+
+    $default  reduce using rule 26 (term)
+
+
+State 75
+
+   36 body: stmt .
+
+    $default  reduce using rule 36 (body)
+
+
+State 76
+
+   33 for: FORtoken index_exp DOtoken body .
+
+    $default  reduce using rule 33 (for)
+
+
+State 77
+
+   37 body: beg . stmtList ENDtoken
+
+    error       shift, and go to state 25
+    FORtoken    shift, and go to state 26
+    READtoken   shift, and go to state 27
+    WRITEtoken  shift, and go to state 28
+    IDtoken     shift, and go to state 3
+
+    stmtList  go to state 81
+    stmt      go to state 30
+    assign    go to state 31
+    read      go to state 32
+    write     go to state 33
+    for       go to state 34
+    id        go to state 35
+
+
+State 78
+
+   22 exp: exp . PLUStoken term
+   23    | exp . MINUStoken term
+   34 index_exp: id COLEQUALtoken exp . TOtoken exp
+
+    TOtoken     shift, and go to state 82
+    PLUStoken   shift, and go to state 58
+    MINUStoken  shift, and go to state 59
+
+
+State 79
+
+   31 read: READtoken LEFTPARENTHESIStoken idList RIGHTPARENTHESIStoken .
+
+    $default  reduce using rule 31 (read)
+
+
+State 80
+
+   32 write: WRITEtoken LEFTPARENTHESIStoken idList RIGHTPARENTHESIStoken .
+
+    $default  reduce using rule 32 (write)
+
+
+State 81
+
+   13 stmtList: stmtList . SEMICOLONtoken stmt
+   37 body: beg stmtList . ENDtoken
+
+    ENDtoken        shift, and go to state 83
+    SEMICOLONtoken  shift, and go to state 53
+
+
+State 82
+
+   34 index_exp: id COLEQUALtoken exp TOtoken . exp
+
+    REALtoken             shift, and go to state 39
+    LEFTPARENTHESIStoken  shift, and go to state 40
+    INTtoken              shift, and go to state 41
+    IDtoken               shift, and go to state 3
+
+    exp     go to state 84
+    term    go to state 44
+    factor  go to state 45
+    id      go to state 56
+
+
+State 83
+
+   37 body: beg stmtList ENDtoken .
+
+    $default  reduce using rule 37 (body)
+
+
+State 84
+
+   22 exp: exp . PLUStoken term
+   23    | exp . MINUStoken term
+   34 index_exp: id COLEQUALtoken exp TOtoken exp .
+
+    PLUStoken   shift, and go to state 58
+    MINUStoken  shift, and go to state 59
+
+    $default  reduce using rule 34 (index_exp)
